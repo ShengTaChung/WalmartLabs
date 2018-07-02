@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="MyVenueTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-07-02T02:10:03" hostname="ShengTas-MBP.fios-router.home" time="0.003">
+  <properties/>
+  <testcase name="shouldNotAddSeatToLevelIfNoSpace" classname="MyVenueTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

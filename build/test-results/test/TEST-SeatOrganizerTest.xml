@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SeatOrganizerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-07-02T00:07:32" hostname="ShengTas-MBP.fios-router.home" time="0.003">
+  <properties/>
+  <testcase name="shouldReturnNullWhenNotEnoughAvailableSeats" classname="SeatOrganizerTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

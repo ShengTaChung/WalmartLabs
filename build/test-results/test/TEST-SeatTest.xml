@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SeatTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-07-02T02:35:56" hostname="ShengTas-MBP.fios-router.home" time="0.003">
+  <properties/>
+  <testcase name="shouldResetNumberOfSeatsToZero" classname="SeatTest" time="0.002"/>
+  <testcase name="shouldReturnCorrectSeatLevel" classname="SeatTest" time="0.0"/>
+  <testcase name="shouldHaveUniqueSeatID" classname="SeatTest" time="0.0"/>
+  <testcase name="shouldReturnCorrectNumberOfSeats" classname="SeatTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
