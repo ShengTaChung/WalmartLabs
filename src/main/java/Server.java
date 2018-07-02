@@ -3,7 +3,7 @@ import java.util.UUID;
 public class Server implements TicketService{
 	private Venue venue;
 	
-	public Server(Venue venue, int holdExpireTime) {
+	public Server(Venue venue) {
         this.venue = venue;
         venue.createSeatsForVenue();
     }
@@ -22,12 +22,8 @@ public class Server implements TicketService{
 
 	public String reserveSeats(int seatHoldId, String customerEmail) {
 		VenueOrganizer organizer = this.venue.getMyOrganizer();
-		SeatHold seatHold = organizer.getSeatHold(seatHoldId);
 		
-		if(seatHold == null || !seatHold.getSeatHoldCustomerEmail().equals(customerEmail)) {
-			return null; 
-		}
-		SeatHold seatsReserved = organizer.removeSeatHold(seatHoldId);
+		SeatHold seatsReserved = organizer.reserveSeatsFromSeatHold(seatHoldId, customerEmail);
 		if(seatsReserved == null) return null;
 		
 		return generateConfirmationCode();

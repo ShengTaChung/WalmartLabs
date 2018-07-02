@@ -4,12 +4,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ServerTest {
 	private VenueOrganizer organizer;
 	MyVenue venue;
 	int expireHoldTime;
 	int seatsPerLevel;
+	Server server;
 	
     @Before  
     public void before() {  
@@ -17,18 +19,15 @@ public class ServerTest {
     	seatsPerLevel = 2;
     	organizer = new VenueOrganizer(expireHoldTime, 4);
     	venue = new MyVenue(2, 4, 4, organizer, seatsPerLevel);
+    	server = new Server(venue);
     }  
 	
     @Test public void shouldReturnCorrectNumberOfSeatsAvailable(){
-    	Server server = new Server(venue, expireHoldTime);
-    	
     	Assert.assertEquals(8, server.numSeatsAvailable());
     }
     
     
     @Test public void shouldReturnCorrectSeatHold(){
-    	Server server = new Server(venue, expireHoldTime);
-    	
     	SeatHold sh1 = server.findAndHoldSeats(2, "e1@email.com");
 		Assert.assertEquals(6, organizer.getNumberOfAvailableSeats());
 		Assert.assertEquals(2, sh1.getSeats().size());
@@ -44,7 +43,6 @@ public class ServerTest {
     }
     
 	@Test public void shouldReturnNullWhenNotEnoughSeatsAvailable(){
-		Server server = new Server(venue, expireHoldTime);
 		SeatHold sh1 = server.findAndHoldSeats(8, "e1@email.com");
 		SeatHold sh2 = server.findAndHoldSeats(1, "e2@email.com");
 		
@@ -52,13 +50,31 @@ public class ServerTest {
 	}
 	
 	@Test public void shouldReserveCorrectSeats() {
-		Server server = new Server(venue, expireHoldTime);
 		SeatHold sh1 = server.findAndHoldSeats(2, "e1@email.com");
 		int sh1ID = sh1.getSeatHoldId();
+		ArrayList<Seat> sh1Seats = sh1.getSeats();
+		
+		Assert.assertEquals("noOwner", sh1Seats.get(0).getOwnerEmail());
+		Assert.assertEquals("noOwner", sh1Seats.get(1).getOwnerEmail());
+		
 		server.reserveSeats(sh1ID, sh1.getSeatHoldCustomerEmail());
+		Assert.assertEquals("e1@email.com", sh1Seats.get(0).getOwnerEmail());
+		Assert.assertEquals("e1@email.com", sh1Seats.get(1).getOwnerEmail());
 		
 		Assert.assertEquals(null, organizer.getSeatHold(sh1ID));
 		Assert.assertEquals(6, organizer.getNumberOfAvailableSeats());
+		
+	}
+	
+	@Test public void shouldGenerateUniqueConfirmationCode() {
+		String code1 = server.generateConfirmationCode();
+		String code2 = server.generateConfirmationCode();
+		String code3 = server.generateConfirmationCode();
+		
+		Assert.assertTrue(!code1.equals(code2));
+		Assert.assertTrue(!code1.equals(code3));
+		Assert.assertTrue(!code2.equals(code3));
+		
 		
 	}
 }

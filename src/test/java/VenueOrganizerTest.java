@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -148,10 +150,50 @@ public class VenueOrganizerTest {
 		int shID3 = sh3.getSeatHoldId();
 		
 		Assert.assertEquals(sh1, organizer.getSeatHold(shID1));
-		organizer.removeSeatHold(shID1);
+		SeatHold removedSeatHold = organizer.removeSeatHold(shID1);
+		Assert.assertEquals(sh1, removedSeatHold);
 		Assert.assertEquals(null, organizer.getSeatHold(shID1));
 		Assert.assertEquals(sh2, organizer.getSeatHold(shID2));
 		Assert.assertEquals(sh3, organizer.getSeatHold(shID3));
+	}
+	
+	@Test public void shouldReturnNullIfSeatHoldIdNotFound() {
+		VenueOrganizer organizer = new VenueOrganizer(300, 3);
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(2, new Seat(2));
+		SeatHold sh1 = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold sh2 = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold sh3 = organizer.createSeatHold(1, "e1@email.com");
 		
+		SeatHold removedSeatHold = organizer.removeSeatHold(4);
+		Assert.assertEquals(null, removedSeatHold);
+	}
+	
+	@Test public void shouldReserveCorrectSeats() {
+		VenueOrganizer organizer = new VenueOrganizer(300, 3);
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(2, new Seat(2));
+		
+		SeatHold sh = organizer.createSeatHold(2, "e1@email.com");
+		SeatHold reservedSH = organizer.reserveSeatsFromSeatHold(sh.getSeatHoldId(), "e1@email.com");
+		ArrayList<Seat> reservedSeats = reservedSH.getSeats();
+		
+
+		Assert.assertEquals("e1@email.com", reservedSeats.get(0).getOwnerEmail());
+		Assert.assertEquals("e1@email.com", reservedSeats.get(1).getOwnerEmail());
+		
+		Assert.assertEquals(null, organizer.getSeatHold(sh.getSeatHoldId()));
+		Assert.assertEquals(1, organizer.getNumberOfAvailableSeats());
+	}
+	
+	@Test public void shouldReturnNullIfInvalidEmail() {
+		VenueOrganizer organizer = new VenueOrganizer(300, 3);
+		organizer.addAvailableSeat(1, new Seat(1));
+		
+		SeatHold sh = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold reservedSH = organizer.reserveSeatsFromSeatHold(sh.getSeatHoldId(), "e2@email.com");
+		Assert.assertEquals(null, reservedSH);
 	}
 }

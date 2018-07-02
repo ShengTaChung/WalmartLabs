@@ -22,4 +22,6 @@ public class Seat {
 	public static void resetNumSeats() { numSeats = 0; }
 	
 	public void setOwner(String ownerEmail) { this.ownerEmail = ownerEmail; }
+	
+	public String getOwnerEmail() { return this.ownerEmail; }
 }

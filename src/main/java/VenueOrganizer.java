@@ -33,7 +33,6 @@ public class VenueOrganizer {
 				return availableSeats.get(i).pop();
 			}
 		}
-		
 		return null;
 	}
 	
@@ -63,4 +62,15 @@ public class VenueOrganizer {
 		return seatHold;
 	}
 
+	public SeatHold reserveSeatsFromSeatHold(int seatHoldId, String customerEmail) {
+		if(!this.getSeatHold(seatHoldId).getSeatHoldCustomerEmail().equals(customerEmail)) return null;
+		
+		SeatHold seatHold = removeSeatHold(seatHoldId);
+		if(seatHold == null) return null;
+		for(Seat seat: seatHold.getSeats()) {
+			seat.setOwner(customerEmail);
+		}
+		
+		return seatHold;
+	}
 }
