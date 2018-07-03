@@ -1,6 +1,6 @@
 # WalmartLabs Coding Challenge
 
-###Assumptions:
+### Assumptions:
 1. The spec does not define what is a best seat. So I created a venue abstract class as a template class, and create seating levels in myVenue class (like airline seating classes) where user can configure number of levels in venue and number of seats in each level. When user requests a best seat, the organizer will search for an available seat from the highest level to lowest (1 to n) and return a seat from the level.
 
 2. A venue is represented as n by m 2-D form.
@@ -18,7 +18,7 @@
 8. No refund or switch ownership after reservation is completed.
 
 
-###Instructions for building/testing the project
+### Instructions for building/testing the project
 1. Clone the repo
 `git clone https://github.com/ShengTaChung/WalmartLabs.git`
 
