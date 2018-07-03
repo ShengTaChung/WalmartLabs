@@ -43,4 +43,13 @@ public class SeatTest {
     	Seat.resetNumSeats();
     	Assert.assertEquals(0, Seat.getNumberOfSeats());
     }    
+    
+    @Test public void shouldSetOwnerEmail() {
+    	Assert.assertEquals("noOwner", seat1.getOwnerEmail());
+    	seat1.setOwner("e1@email.com");
+    	
+    	Assert.assertEquals("e1@email.com", seat1.getOwnerEmail());
+    	Assert.assertEquals("noOwner", seat2.getOwnerEmail());
+    	Assert.assertEquals("noOwner", seat3.getOwnerEmail());
+    }
 }

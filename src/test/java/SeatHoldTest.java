@@ -35,4 +35,10 @@ public class SeatHoldTest {
     	Assert.assertEquals(2, sh1.getSeats().size());
     	Assert.assertEquals(3, sh2.getSeats().size());
     }
+    
+    @Test public void shouldSetDateCreated() {
+    	SeatHold sh1 = new SeatHold(1, "e1@email.com");
+    	sh1.setDateCreated(12300);
+    	Assert.assertEquals(12300, sh1.getDateCreated());
+    }
 }
