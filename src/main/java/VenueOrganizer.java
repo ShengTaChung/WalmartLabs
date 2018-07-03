@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Stack;
 
 public class VenueOrganizer {
@@ -72,5 +75,27 @@ public class VenueOrganizer {
 		}
 		
 		return seatHold;
+	}
+	
+	public void removeExpiredSeatHold() {
+		ArrayList<Integer> expiredSeatHoldID = new ArrayList<Integer>();
+		Iterator seatHoldIterator = this.seatHoldMap.entrySet().iterator();
+		
+		while(seatHoldIterator.hasNext()) {
+			long dateNowInSecond = (new Date().getTime())/1000;
+			SeatHold sh = (SeatHold) ((Map.Entry)seatHoldIterator.next()).getValue();
+			if(dateNowInSecond - sh.getDateCreated() >= this.holdExpireTime) {
+				expiredSeatHoldID.add(sh.getSeatHoldId());
+			}
+		}
+		
+		for(int i = 0; i < expiredSeatHoldID.size(); i++) {
+			ArrayList<Seat> removedSeats = this.removeSeatHold(expiredSeatHoldID.get(i)).getSeats();
+			
+			for(int j = 0; j < removedSeats.size(); j++) {
+				Seat seat = removedSeats.get(j);
+				this.addAvailableSeat(seat.getSeatLevel(), seat);
+			}
+		}
 	}
 }

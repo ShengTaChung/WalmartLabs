@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -195,5 +196,78 @@ public class VenueOrganizerTest {
 		SeatHold sh = organizer.createSeatHold(1, "e1@email.com");
 		SeatHold reservedSH = organizer.reserveSeatsFromSeatHold(sh.getSeatHoldId(), "e2@email.com");
 		Assert.assertEquals(null, reservedSH);
+	}
+	
+	@Test public void shouldRemoveExpiredSeatHolds() throws InterruptedException {
+		VenueOrganizer organizer = new VenueOrganizer(300, 3);
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(2, new Seat(2));
+		SeatHold sh1 = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold sh2 = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold sh3 = organizer.createSeatHold(1, "e1@email.com");
+		int shID1 = sh1.getSeatHoldId();
+		int shID2 = sh2.getSeatHoldId();
+		int shID3 = sh3.getSeatHoldId();
+		
+		organizer.removeExpiredSeatHold();
+		Assert.assertEquals(sh1, organizer.getSeatHold(sh1.getSeatHoldId()));
+		Assert.assertEquals(sh2, organizer.getSeatHold(sh2.getSeatHoldId()));
+		Assert.assertEquals(sh3, organizer.getSeatHold(sh3.getSeatHoldId()));
+		
+		
+		long newDateCreatedInSecond = (new Date().getTime())/1000 - 300;
+		sh1.setDateCreated(newDateCreatedInSecond);
+		sh2.setDateCreated(newDateCreatedInSecond);
+		sh3.setDateCreated(newDateCreatedInSecond);
+		
+		organizer.removeExpiredSeatHold();
+		Assert.assertEquals(null, organizer.getSeatHold(sh1.getSeatHoldId()));
+		Assert.assertEquals(null, organizer.getSeatHold(sh2.getSeatHoldId()));
+		Assert.assertEquals(null, organizer.getSeatHold(sh3.getSeatHoldId()));
+		
+	}
+	
+	@Test public void shouldRemoveExpireAndAddBackToAvailable() {
+		VenueOrganizer organizer = new VenueOrganizer(300, 3);
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(1, new Seat(1));
+		organizer.addAvailableSeat(2, new Seat(2));
+		SeatHold sh1 = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold sh2 = organizer.createSeatHold(1, "e1@email.com");
+		SeatHold sh3 = organizer.createSeatHold(1, "e1@email.com");
+		int shID1 = sh1.getSeatHoldId();
+		int shID2 = sh2.getSeatHoldId();
+		int shID3 = sh3.getSeatHoldId();
+		
+		organizer.removeExpiredSeatHold();
+		Assert.assertEquals(sh1, organizer.getSeatHold(sh1.getSeatHoldId()));
+		Assert.assertEquals(sh2, organizer.getSeatHold(sh2.getSeatHoldId()));
+		Assert.assertEquals(sh3, organizer.getSeatHold(sh3.getSeatHoldId()));
+		
+		
+		long newDateCreatedInSecond = (new Date().getTime())/1000 - 300;
+		sh1.setDateCreated(newDateCreatedInSecond);
+		sh2.setDateCreated(newDateCreatedInSecond);
+		sh3.setDateCreated(newDateCreatedInSecond);
+		
+		Assert.assertEquals(0, organizer.getNumberOfAvailableSeats());
+		organizer.removeExpiredSeatHold();
+		Assert.assertEquals(null, organizer.getSeatHold(sh1.getSeatHoldId()));
+		Assert.assertEquals(null, organizer.getSeatHold(sh2.getSeatHoldId()));
+		Assert.assertEquals(null, organizer.getSeatHold(sh3.getSeatHoldId()));
+		Assert.assertEquals(3, organizer.getNumberOfAvailableSeats());
+		
+		Seat bestSeat1 = organizer.findAndHoldSeat();
+		Assert.assertEquals(1, bestSeat1.getSeatLevel());
+		Assert.assertEquals(2, organizer.getNumberOfAvailableSeats());
+		
+		Seat bestSeat2 = organizer.findAndHoldSeat();
+		Assert.assertEquals(1, bestSeat2.getSeatLevel());
+		Assert.assertEquals(1, organizer.getNumberOfAvailableSeats());
+		
+		Seat bestSeat3 = organizer.findAndHoldSeat();
+		Assert.assertEquals(2, bestSeat3.getSeatLevel());
+		Assert.assertEquals(0, organizer.getNumberOfAvailableSeats());
 	}
 }

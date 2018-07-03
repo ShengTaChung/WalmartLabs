@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.ArrayList;
 
 public class SeatHold {
@@ -5,12 +6,14 @@ public class SeatHold {
 	private int seatHoldId;
 	private String customerEmail;
 	private ArrayList<Seat> seats;
+	private long dateCreatedInSecond;
 	
 	public SeatHold(int numSeats, String customerEmail) {
 		this.seatHoldId = numSeatHolds + 1;
 		numSeatHolds++;
 		this.customerEmail = customerEmail;
 		
+		dateCreatedInSecond = (new Date().getTime())/1000;
 		seats = new ArrayList<Seat>(numSeats);
 	}
 	
@@ -23,4 +26,7 @@ public class SeatHold {
 	public String getSeatHoldCustomerEmail() { return this.customerEmail; }
 	
 	public ArrayList<Seat> getSeats() { return this.seats; }
+	
+	public long getDateCreated() { return this.dateCreatedInSecond; }
+	public void setDateCreated(long dateCreatedInSec) { this.dateCreatedInSecond = dateCreatedInSec; }
 }

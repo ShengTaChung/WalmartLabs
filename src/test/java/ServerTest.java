@@ -63,7 +63,15 @@ public class ServerTest {
 		
 		Assert.assertEquals(null, organizer.getSeatHold(sh1ID));
 		Assert.assertEquals(6, organizer.getNumberOfAvailableSeats());
+	}
+	
+	@Test public void shouldReturnNullIfInvalidEmail() {
+		SeatHold sh1 = server.findAndHoldSeats(2, "e1@email.com");
+		int sh1ID = sh1.getSeatHoldId();
 		
+		String reservedSeats = server.reserveSeats(sh1ID, "e2@email.com");
+		
+		Assert.assertEquals(null, reservedSeats);
 	}
 	
 	@Test public void shouldGenerateUniqueConfirmationCode() {
@@ -74,7 +82,5 @@ public class ServerTest {
 		Assert.assertTrue(!code1.equals(code2));
 		Assert.assertTrue(!code1.equals(code3));
 		Assert.assertTrue(!code2.equals(code3));
-		
-		
 	}
 }
