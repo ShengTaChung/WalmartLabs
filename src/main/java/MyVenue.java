@@ -15,7 +15,9 @@ public class MyVenue extends Venue{
 		this.setSeatsPerLevel(seatsPerLevel);
 	}
 	
-	//return false if not valid
+	/* Set max number of seats per level.
+	 * return true if success else false
+	*/
 	public boolean setSeatsPerLevel(int seatsPerLevel) {
 		int totalSeats = this.getNumberOfVenueRows() * this.getNumberOfVenueCols();
 		if(totalSeats < seatsPerLevel * this.numOfSeatingLevels) { return false; }
@@ -24,8 +26,12 @@ public class MyVenue extends Venue{
 		return true;
 	}
 	
+	/* Get max number of seats per level */
 	public int getSeatsPerLevel() { return this.seatsPerLevel; }
 	
+	/* Add a seat to a level
+	 * return true if success else false
+	 */
 	public boolean addSeatToLevel(int level, Seat seat) {
 		if(level > this.numOfSeatingLevels) { return false; }
 		
@@ -41,12 +47,14 @@ public class MyVenue extends Venue{
 		return true;
 	}
 	
+	/* get number of seats created in a level */
 	public int getNumSeatsInLevel(int level) {
 		if(this.levelList.size() < level) return 0;
 		
 		return this.levelList.get(level-1).size();
 	}
 	
+	/* fill the venue with seats */
 	public void createSeatsForVenue() {
 		int totalSeats = this.getNumberOfVenueCols() * this.getNumberOfVenueRows();
 		for(int i = 0; i < this.numOfSeatingLevels; i++) {

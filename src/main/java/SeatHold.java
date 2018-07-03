@@ -17,16 +17,23 @@ public class SeatHold {
 		seats = new ArrayList<Seat>(numSeats);
 	}
 	
+	/* Add a seat to this seathold */
 	public void addSeat(Seat seat) {
 		this.seats.add(seat);
 	}
 	
+	/* Get seatHold's id*/
 	public int getSeatHoldId() { return this.seatHoldId; }
 	
+	/* Get holder's email*/
 	public String getSeatHoldCustomerEmail() { return this.customerEmail; }
 	
+	/* Get all seats in the seatHold */
 	public ArrayList<Seat> getSeats() { return this.seats; }
 	
+	/* Set the seathold creation date */
 	public long getDateCreated() { return this.dateCreatedInSecond; }
+	
+	/* Get the seathold creation date */
 	public void setDateCreated(long dateCreatedInSec) { this.dateCreatedInSecond = dateCreatedInSec; }
 }

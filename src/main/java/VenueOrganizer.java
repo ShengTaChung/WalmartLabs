@@ -18,6 +18,7 @@ public class VenueOrganizer {
 		seatHoldMap = new HashMap<Integer, SeatHold>();
 	}
 	
+	/* Add a seat to available list*/
 	public void addAvailableSeat(int level, Seat seat) {
 		for(int i = availableSeats.size(); i < level; i++) {
 			this.availableSeats.add(i, new Stack<Seat>());
@@ -27,6 +28,7 @@ public class VenueOrganizer {
 		this.numAvailableSeats++;
 	}
 	
+	/* Get number of available seats*/
 	public int getNumberOfAvailableSeats() { return this.numAvailableSeats; }
 	
 	public synchronized Seat findAndHoldSeat() {
@@ -39,6 +41,7 @@ public class VenueOrganizer {
 		return null;
 	}
 	
+	/* Create a seatHold and return it back*/
 	public SeatHold createSeatHold(int numSeats, String customerEmail) {
 		if(this.numAvailableSeats < numSeats) { return null; }
 		
@@ -54,17 +57,19 @@ public class VenueOrganizer {
 		return newSeatHold;
 	}
 	
-	//return null if not fund
+	/* Search for a seathold. Return null if not found*/
 	public SeatHold getSeatHold(int seatHoldId) {
 		return this.seatHoldMap.get(seatHoldId);
 	}
 	
+	/* Remove seathold from map. Return null if not found*/
 	public synchronized SeatHold removeSeatHold(int seatHoldId) {
 		SeatHold seatHold = this.seatHoldMap.remove(seatHoldId);
 		
 		return seatHold;
 	}
 
+	/*Reserve seats using the seatHold id*/
 	public SeatHold reserveSeatsFromSeatHold(int seatHoldId, String customerEmail) {
 		if(!this.getSeatHold(seatHoldId).getSeatHoldCustomerEmail().equals(customerEmail)) return null;
 		
@@ -77,6 +82,7 @@ public class VenueOrganizer {
 		return seatHold;
 	}
 	
+	/* Remove expire seathold from map*/
 	public void removeExpiredSeatHold() {
 		ArrayList<Integer> expiredSeatHoldID = new ArrayList<Integer>();
 		Iterator seatHoldIterator = this.seatHoldMap.entrySet().iterator();
